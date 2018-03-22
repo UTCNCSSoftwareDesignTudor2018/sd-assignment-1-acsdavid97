@@ -1,5 +1,7 @@
 package data_access.connection;
 
+import data_access.RepositoryException;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -16,7 +18,11 @@ public class ConnectionFactory {
         return connection;
     }
 
-    public static Connection getConnection() throws SQLException {
-        return factory.createConnection();
+    public static Connection getConnection() throws RepositoryException {
+        try {
+            return factory.createConnection();
+        } catch (SQLException e) {
+            throw new RepositoryException(e);
+        }
     }
 }

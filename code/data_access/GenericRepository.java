@@ -10,4 +10,5 @@ public interface GenericRepository<T extends GenericDTO> {
     Collection<T> getAll() throws RepositoryException;
     boolean update(T toUpdate) throws RepositoryException;
     boolean delete(T toDelete) throws RepositoryException;
+    boolean delete(int id) throws RepositoryException;
 }

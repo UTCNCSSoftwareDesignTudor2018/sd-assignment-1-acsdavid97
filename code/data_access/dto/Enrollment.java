@@ -1,10 +1,39 @@
 package data_access.dto;
 
+import java.util.Objects;
+
 public class Enrollment implements GenericDTO{
     private int id;
     private int student_id;
     private int course_id;
     private int exam_id;
+
+    @Override
+    public String toString() {
+        return "Enrollment{" +
+                "id=" + id +
+                ", student_id=" + student_id +
+                ", course_id=" + course_id +
+                ", exam_id=" + exam_id +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Enrollment that = (Enrollment) o;
+        return id == that.id &&
+                student_id == that.student_id &&
+                course_id == that.course_id &&
+                exam_id == that.exam_id;
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, student_id, course_id, exam_id);
+    }
 
     @Override
     public int getId() {

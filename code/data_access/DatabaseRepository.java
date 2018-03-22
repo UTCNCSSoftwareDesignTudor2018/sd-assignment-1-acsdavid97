@@ -1,7 +1,5 @@
 package data_access;
 
-import data_access.GenericRepository;
-import data_access.RepositoryException;
 import data_access.connection.ConnectionFactory;
 import data_access.dto.GenericDTO;
 
@@ -22,95 +20,6 @@ public class DatabaseRepository<T extends GenericDTO> implements GenericReposito
     protected DatabaseRepository(Class<? extends T> subClass){
         this.type = subClass;
         this.databaseTableName = type.getSimpleName().toLowerCase() + "s";
-    }
-
-
-    private String createSelectQuery(String fieldName, String value) {
-        return "SELECT * FROM `"
-                + databaseTableName
-                + "` WHERE " + fieldName + "=" + value;
-    }
-
-    private String createDeleteQuery(String fieldName, String value) {
-        return "DELETE FROM `"
-                + databaseTableName
-                + "` WHERE " + fieldName + "=" + value;
-    }
-
-    private String createInsertQuery(T toInsert) throws RepositoryException {
-        StringBuilder sb = new StringBuilder();
-        sb.append("INSERT INTO `");
-        sb.append(databaseTableName);
-        sb.append("` (");
-
-        for(Field field : type.getDeclaredFields()) {
-            field.setAccessible(true);
-            if (!field.getName().equals("id")) {
-                sb.append("`").append(field.getName()).append("`,");
-            }
-        }
-        sb.deleteCharAt(sb.length() - 1);
-        sb.append(") VALUES (");
-
-        for(Field field : type.getDeclaredFields()) {
-            field.setAccessible(true);
-            if (!field.getName().equals("id")) {
-                try {
-                    sb.append("'").append(field.get(toInsert)).append("',");
-                } catch (IllegalAccessException e) {
-                    throw new RepositoryException(e);
-                }
-            }
-        }
-        sb.deleteCharAt(sb.length() - 1);
-        sb.append(");");
-        return sb.toString();
-    }
-
-    private String createUpdateQuery(String idField, String value, T toUpdate) throws RepositoryException {
-        StringBuilder sb = new StringBuilder();
-        sb.append("UPDATE `");
-        sb.append(type.getSimpleName());
-        sb.append("` SET ");
-        for(Field field : type.getDeclaredFields()) {
-            field.setAccessible(true);
-            sb.append("`").append(field.getName()).append("`=");
-            try {
-                sb.append("'").append(field.get(toUpdate)).append("',");
-            } catch (IllegalAccessException e) {
-                throw new RepositoryException(e);
-            }
-        }
-        sb.deleteCharAt(sb.length() - 1);
-        sb.append(" WHERE `").append(idField).append("`='").append(value).append("';");
-
-        return sb.toString();
-    }
-
-    private List<T> executeQuery(String query) throws RepositoryException {
-        List<T> results = null;
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        try {
-            connection = ConnectionFactory.getConnection();
-            statement = connection.prepareStatement(query);
-            resultSet = statement.executeQuery();
-
-            results = createObjects(resultSet);
-            resultSet.close();
-            statement.close();
-            connection.close();
-        } catch (SQLException e) {
-            throw new RepositoryException(e);
-        }
-
-        return results;
-    }
-
-    private List<T> getObjectsFromDB(String field, String value) throws RepositoryException {
-        String query = createSelectQuery(field, value);
-        return this.executeQuery(query);
     }
 
     private List<T> createObjects(ResultSet resultSet) {
@@ -135,44 +44,139 @@ public class DatabaseRepository<T extends GenericDTO> implements GenericReposito
         return list;
     }
 
-    private boolean executeUpdate(String query) throws RepositoryException {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        int retValue = 0;
-        try {
-            connection = ConnectionFactory.getConnection();
-            statement = connection.prepareStatement(query);
-            retValue = statement.executeUpdate();
-            statement.close();
-            connection.close();
-        } catch (SQLException e) {
-            throw new RepositoryException(e);
+    private String generatePlaceholders(int placeholderCount) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < placeholderCount - 1; i++) {
+            stringBuilder.append("?, ");
         }
-
-        return (retValue != 0);
+        stringBuilder.append("?");
+        return stringBuilder.toString();
     }
 
     public T findById(int id) throws RepositoryException {
-        List<T> results = getObjectsFromDB("id", Integer.toString(id));
-        return results.size() > 0 ? results.get(0) : null;
+        String findString = "SELECT * FROM `" + databaseTableName
+                + "` WHERE " + "id = " + "?";
+        try {
+            Connection connection = ConnectionFactory.getConnection();
+            PreparedStatement findStatement = connection.prepareStatement(findString);
+            findStatement.setInt(1, id);
+            ResultSet foundElements = findStatement.executeQuery();
+            List<T> foundDTOs = createObjects(foundElements);
+            findStatement.close();
+            connection.close();
+            return (foundDTOs.size() > 0) ? foundDTOs.get(0) : null;
+        } catch (SQLException e) {
+            throw new RepositoryException(e);
+        }
+    }
+
+    private List<Field> getFieldsWithoutID() {
+        Field[] fieldsArray = type.getDeclaredFields();
+        List<Field> fieldList = new ArrayList<>();
+        for(Field field : fieldsArray) {
+            field.setAccessible(true);
+            if (!field.getName().equals("id")) {
+                fieldList.add(field);
+            }
+        }
+        return fieldList;
     }
 
     public void add(T toAdd) throws RepositoryException {
-        String insertQuery = createInsertQuery(toAdd);
-        executeUpdate(insertQuery);
+        List<Field> fields = getFieldsWithoutID();
+        String insertHeadString = "INSERT INTO  `" + databaseTableName + "`";
+
+        StringBuilder stringBuilder = new StringBuilder(insertHeadString);
+        stringBuilder.append("(");
+        for (Field field : getFieldsWithoutID()) {
+            stringBuilder.append("`").append(field.getName()).append("`,");
+        }
+        stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+        stringBuilder.append(")");
+        String insertString = stringBuilder.toString()
+                 + " VALUES (" + generatePlaceholders(fields.size()) + ")";
+
+        try {
+            Connection connection = ConnectionFactory.getConnection();
+            PreparedStatement insertStatement = connection.prepareStatement(insertString);
+            int fieldIndex = 1;
+            for(Field field : fields) {
+                insertStatement.setObject(fieldIndex, field.get(toAdd));
+                fieldIndex++;
+            }
+            insertStatement.executeUpdate();
+            insertStatement.close();
+            connection.close();
+        } catch (SQLException | IllegalAccessException e) {
+            throw new RepositoryException(e);
+        }
     }
 
     public Collection<T> getAll() throws RepositoryException {
-        return getObjectsFromDB("1", "1");
+        String selectAllString = "SELECT * FROM `" + databaseTableName + "`";
+        try {
+            Connection connection = ConnectionFactory.getConnection();
+            Statement selectAllStatement = connection.createStatement();
+            ResultSet results = selectAllStatement.executeQuery(selectAllString);
+            Collection<T> resultObjects = createObjects(results);
+            selectAllStatement.close();
+            connection.close();
+            return resultObjects;
+        } catch (SQLException e) {
+            throw new RepositoryException(e);
+        }
     }
 
     public boolean update(T toUpdate) throws RepositoryException {
-        String updateQuery = createUpdateQuery("id", Integer.toString(toUpdate.getId()), toUpdate);
-        return executeUpdate(updateQuery);
+        String updateHeadString = "UPDATE `" + databaseTableName + "`"
+                + " SET ";
+        StringBuilder stringBuilder = new StringBuilder(updateHeadString);
+        for (Field field : getFieldsWithoutID()) {
+            stringBuilder.append("`").append(field.getName()).append("` = ?,");
+        }
+        stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+        stringBuilder.append(" WHERE ").append("`id` = ?");
+
+        String updateString = stringBuilder.toString();
+
+        try {
+            Connection connection = ConnectionFactory.getConnection();
+            PreparedStatement updateStatement = connection.prepareStatement(updateString);
+            int fieldIndex = 1;
+            for(Field field : getFieldsWithoutID()) {
+                updateStatement.setObject(fieldIndex, field.get(toUpdate));
+                fieldIndex++;
+            }
+            updateStatement.setInt(fieldIndex, toUpdate.getId());
+
+            System.out.println(updateStatement);
+            int updatedRows = updateStatement.executeUpdate();
+            updateStatement.close();
+            connection.close();
+            return (updatedRows != 0);
+        } catch (SQLException | IllegalAccessException e) {
+            throw new RepositoryException(e);
+        }
     }
 
     public boolean delete(T toDelete) throws RepositoryException {
-        String query = createDeleteQuery("id", Integer.toString(toDelete.getId()));
-        return executeUpdate(query);
+        return delete(toDelete.getId());
+    }
+
+    @Override
+    public boolean delete(int id) throws RepositoryException {
+        String deleteStatment = "DELETE FROM `" + databaseTableName
+                + "` WHERE " + "id = ?";
+        try {
+            Connection connection = ConnectionFactory.getConnection();
+            PreparedStatement deleteStatement = connection.prepareStatement(deleteStatment);
+            deleteStatement.setInt(1, id);
+            int rowsDeleted = deleteStatement.executeUpdate();
+            deleteStatement.close();
+            connection.close();
+            return (rowsDeleted != 0);
+        } catch (SQLException e) {
+            throw new RepositoryException(e);
+        }
     }
 }
