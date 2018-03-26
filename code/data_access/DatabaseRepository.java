@@ -22,7 +22,7 @@ public class DatabaseRepository<T extends GenericDTO> implements GenericReposito
         this.databaseTableName = type.getSimpleName().toLowerCase() + "s";
     }
 
-    private List<T> createObjects(ResultSet resultSet) {
+    List<T> createObjects(ResultSet resultSet) {
         List<T> list = new ArrayList<>();
 
         try {
@@ -149,7 +149,6 @@ public class DatabaseRepository<T extends GenericDTO> implements GenericReposito
             }
             updateStatement.setInt(fieldIndex, toUpdate.getId());
 
-            System.out.println(updateStatement);
             int updatedRows = updateStatement.executeUpdate();
             updateStatement.close();
             connection.close();

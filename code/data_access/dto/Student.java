@@ -5,6 +5,23 @@ import java.util.Objects;
 public class Student implements GenericDTO{
     private int id;
     private int user_id;
+
+    public Student(int id, int user_id, String id_number) {
+        this.id = id;
+        this.user_id = user_id;
+        this.id_number = id_number;
+    }
+
+    public Student(Student student) {
+        this.id = student.id;
+        this.user_id = student.user_id;
+        this.id_number = student.id_number;
+    }
+
+    public Student() {
+
+    }
+
     private String id_number;
 
     @Override

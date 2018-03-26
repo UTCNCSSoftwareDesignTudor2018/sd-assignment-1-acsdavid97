@@ -10,6 +10,28 @@ public class User implements GenericDTO{
     private String address;
     private int login_id;
 
+    public User(int id, String name, String card_number, String personal_numerical_code, String address, int login_id) {
+        this.id = id;
+        this.name = name;
+        this.card_number = card_number;
+        this.personal_numerical_code = personal_numerical_code;
+        this.address = address;
+        this.login_id = login_id;
+    }
+
+    public User(User user) {
+        this.id = user.id;
+        this.name = user.name;
+        this.card_number = user.card_number;
+        this.personal_numerical_code = user.personal_numerical_code;
+        this.address = user.address;
+        this.login_id = user.login_id;
+    }
+
+    public User() {
+
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

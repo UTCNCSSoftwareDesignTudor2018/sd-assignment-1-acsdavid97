@@ -6,6 +6,20 @@ public class Teacher implements GenericDTO{
     private int id;
     private int user_id;
 
+    public Teacher(int id, int user_id) {
+        this.id = id;
+        this.user_id = user_id;
+    }
+
+    public Teacher(Teacher teacher) {
+        this.id = teacher.id;
+        this.user_id = teacher.user_id;
+    }
+
+    public Teacher() {
+
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

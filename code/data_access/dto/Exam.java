@@ -1,10 +1,30 @@
 package data_access.dto;
 
+import java.sql.Date;
 import java.util.Objects;
 
 public class Exam implements GenericDTO {
     private int id;
     private int grade;
+    private int enrollment_id;
+    private Date date;
+
+    public Exam(int id, int grade, int enrollment_id, Date date) {
+        this.id = id;
+        this.grade = grade;
+        this.enrollment_id = enrollment_id;
+        this.date = date;
+    }
+
+    public Exam(Exam exam) {
+        this.id = exam.id;
+        this.grade = exam.grade;
+        this.enrollment_id = exam.enrollment_id;
+        this.date = exam.date;
+    }
+
+    public Exam() {
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -12,13 +32,15 @@ public class Exam implements GenericDTO {
         if (o == null || getClass() != o.getClass()) return false;
         Exam exam = (Exam) o;
         return id == exam.id &&
-                grade == exam.grade;
+                grade == exam.grade &&
+                enrollment_id == exam.enrollment_id &&
+                date.equals(exam.date);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, grade);
+        return Objects.hash(id, grade, enrollment_id, date);
     }
 
     @Override
@@ -26,6 +48,8 @@ public class Exam implements GenericDTO {
         return "Exam{" +
                 "id=" + id +
                 ", grade=" + grade +
+                ", enrollment_id=" + enrollment_id +
+                ", date=" + date +
                 '}';
     }
 
@@ -42,7 +66,23 @@ public class Exam implements GenericDTO {
         return grade;
     }
 
+    public int getEnrollment_id() {
+        return enrollment_id;
+    }
+
+    public void setEnrollment_id(int enrollment_id) {
+        this.enrollment_id = enrollment_id;
+    }
+
     public void setGrade(int grade) {
         this.grade = grade;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

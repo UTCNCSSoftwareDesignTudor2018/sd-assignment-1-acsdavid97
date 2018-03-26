@@ -7,6 +7,20 @@ public class Login implements GenericDTO{
     private String username;
     private String password;
 
+    public Login() {
+
+    }
+
+    public Login(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    public Login(Login login) {
+        this.username = login.username;
+        this.password = login.password;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -25,7 +39,7 @@ public class Login implements GenericDTO{
 
     @Override
     public String toString() {
-        return "Login{" +
+        return "LoginBLL{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
