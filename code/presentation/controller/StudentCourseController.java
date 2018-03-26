@@ -1,18 +1,18 @@
 package presentation.controller;
 
-import presentation.view.CourseView;
+import presentation.view.StudentCourseView;
 
 import java.awt.event.ActionListener;
 
-public class CourseController {
+public class StudentCourseController {
 
-    private CourseView courseView;
+    private StudentCourseView studentCourseView;
 
-    public CourseController(CourseView courseView) {
-        this.courseView = courseView;
+    public StudentCourseController(StudentCourseView studentCourseView) {
+        this.studentCourseView = studentCourseView;
     }
 
     public void setButtonListener(ActionListener actionListener) {
-        courseView.setButtonActionListener(actionListener);
+        studentCourseView.setButtonActionListener(actionListener);
     }
 }
