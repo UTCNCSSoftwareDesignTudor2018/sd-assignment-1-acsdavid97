@@ -11,9 +11,9 @@ import presentation.view.UserView;
 
 import javax.swing.*;
 
-public class StudentEditController {
-    private Facade facade;
-    private StudentEditView studentEditView;
+class StudentEditController {
+    private final Facade facade;
+    private final StudentEditView studentEditView;
 
     public StudentEditController(Facade facade, StudentEditView studentEditView) {
         this.facade = facade;
@@ -55,8 +55,21 @@ public class StudentEditController {
                 if (course == null) {
                     return;
                 }
+                if (facade.findExamOfStudentCourse(student, course) != null) {
+                    AlertHelper.displayError("student already graded");
+                }
                 String gradeString = JOptionPane.showInputDialog("enter grade");
-                facade.gradeStudent(student, course, 10);
+                if (gradeString == null){
+                    return;
+                }
+                int grade;
+                try {
+                    grade = Integer.parseInt(gradeString);
+                }catch (NumberFormatException e) {
+                    AlertHelper.displayError("please enter a number");
+                    return;
+                }
+                facade.gradeStudent(student, course, grade);
             });
             JFrame courseViewWindow = new JFrame();
             courseViewWindow.setContentPane(courseView.getRootPanel());
@@ -66,7 +79,7 @@ public class StudentEditController {
         });
 
         studentEditView.addGenerateReportActionListener(actionEvent -> {
-            // todo:
+            // todo;
         });
     }
 

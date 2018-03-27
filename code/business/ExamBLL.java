@@ -1,15 +1,14 @@
 package business;
 
-import data_access.ExamDatabase;
 import data_access.ExamRepository;
 import data_access.dto.Enrollment;
 import data_access.dto.Exam;
 
-public class ExamBLL {
-    private ExamRepository examRepository;
+class ExamBLL {
+    private final ExamRepository examRepository;
 
     ExamBLL(ExamRepository examRepository) {
-        examRepository = examRepository;
+        this.examRepository = examRepository;
     }
 
     public Exam findExamFromEnrollment(Enrollment enrollment) {

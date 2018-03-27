@@ -18,7 +18,7 @@ public class UserView extends JPanel{
     private JPasswordField passwordField;
     private User user;
     private Login login;
-    private Facade facade;
+    private final Facade facade;
 
     public UserView(Login login, User user, Facade facade) {
         this.login = login;

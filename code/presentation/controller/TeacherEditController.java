@@ -9,9 +9,9 @@ import presentation.view.UserView;
 
 import javax.swing.*;
 
-public class TeacherEditController {
-    private Facade facade;
-    private TeacherEditView teacherEditView;
+class TeacherEditController {
+    private final Facade facade;
+    private final TeacherEditView teacherEditView;
 
     public TeacherEditController(Facade facade, TeacherEditView teacherEditView) {
         this.facade = facade;
@@ -57,7 +57,6 @@ public class TeacherEditController {
             newUser.setPersonal_numerical_code(userView.getPersonalNumCodeText());
             newUser.setCard_number(userView.getCardNumberText());
             newUser.setAddress(userView.getAddressText());
-            // todo add group
             Teacher newTeacher = new Teacher(teacher);
             if(!facade.updateTeacher(newLogin, newUser, newTeacher)) {
                 AlertHelper.displayError("username already taken");
@@ -83,7 +82,6 @@ public class TeacherEditController {
             newUser.setPersonal_numerical_code(userView.getPersonalNumCodeText());
             newUser.setCard_number(userView.getCardNumberText());
             newUser.setAddress(userView.getAddressText());
-            // todo add group
             Teacher newTeacher = new Teacher();
             if(!facade.addTeacher(newLogin, newUser, newTeacher)) {
                 AlertHelper.displayError("username already taken");

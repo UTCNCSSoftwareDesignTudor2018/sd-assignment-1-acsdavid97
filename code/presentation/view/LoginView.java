@@ -1,14 +1,11 @@
 package presentation.view;
 
-import com.jgoodies.forms.layout.CellConstraints;
-import com.jgoodies.forms.layout.FormLayout;
-
 import javax.swing.*;
 
 public class LoginView extends JFrame {
     private JPanel rootPanel;
-    private JTextField textField1;
-    private JPasswordField passwordField1;
+    private JTextField usernameField;
+    private JPasswordField passwordField;
     private JButton button1;
 
     public LoginView() {
@@ -23,12 +20,12 @@ public class LoginView extends JFrame {
         return rootPanel;
     }
 
-    public JTextField getTextField1() {
-        return textField1;
+    public JTextField getUsernameField() {
+        return usernameField;
     }
 
-    public JPasswordField getPasswordField1() {
-        return passwordField1;
+    public JPasswordField getPasswordField() {
+        return passwordField;
     }
 
     public JButton getButton1() {

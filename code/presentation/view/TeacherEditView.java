@@ -8,11 +8,11 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 
 public class TeacherEditView extends JPanel{
-    private TeacherListView teacherListView;
-    private Facade facade;
-    private JButton addButton;
-    private JButton deleteButton;
-    private JButton updateButton;
+    private final TeacherListView teacherListView;
+    private final Facade facade;
+    private final JButton addButton;
+    private final JButton deleteButton;
+    private final JButton updateButton;
 
     public TeacherEditView(Facade facade) {
         this. facade = facade;

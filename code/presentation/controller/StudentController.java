@@ -6,11 +6,11 @@ import presentation.view.CourseListView;
 import presentation.view.StudentCourseView;
 import presentation.view.StudentView;
 
-public class StudentController {
-    private Student student;
-    private StudentView studentView;
-    private UserController userController;
-    private Facade facade;
+class StudentController {
+    private final Student student;
+    private final StudentView studentView;
+    private final UserController userController;
+    private final Facade facade;
 
     public StudentController(StudentView studentView, Student student, Facade facade) {
         this.student = student;
@@ -40,8 +40,8 @@ public class StudentController {
             if (course == null) {
                 return;
             }
-            if (!facade.unenrollStudent(student, course)) {
-                AlertHelper.displayError("could not unenroll student");
+            if (!facade.unEnrollStudent(student, course)) {
+                AlertHelper.displayError("could not un-enroll student");
             }
             studentView.getStudentCourseView().populateCourseList();
         });

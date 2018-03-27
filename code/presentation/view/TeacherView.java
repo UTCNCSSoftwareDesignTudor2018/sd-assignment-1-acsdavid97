@@ -3,11 +3,10 @@ package presentation.view;
 import business.Facade;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class TeacherView extends JFrame{
     private JPanel rootPanel;
-    private Facade facade;
+    private final Facade facade;
     private StudentEditView studentEditView;
     private TeacherEditView teacherEditView;
     private CourseEditView courseEditView;
@@ -17,7 +16,6 @@ public class TeacherView extends JFrame{
     }
 
     private void createUIComponents() {
-        // TODO: place custom component creation code here
         rootPanel = new JPanel();
         rootPanel.setLayout(new BoxLayout(rootPanel, BoxLayout.Y_AXIS));
 

@@ -4,8 +4,8 @@ import data_access.UserRepository;
 import data_access.dto.Login;
 import data_access.dto.User;
 
-public class UserBLL {
-    private UserRepository userRepository;
+class UserBLL {
+    private final UserRepository userRepository;
 
     UserBLL(UserRepository userRepository) {
         this.userRepository = userRepository;

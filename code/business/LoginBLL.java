@@ -1,13 +1,12 @@
 package business;
 
-import data_access.LoginDatabase;
 import data_access.LoginRepository;
 import data_access.dto.Login;
 import data_access.dto.User;
 
-public class LoginBLL {
+class LoginBLL {
 
-    private LoginRepository loginRepository;
+    private final LoginRepository loginRepository;
 
     LoginBLL(LoginRepository loginRepository) {
         this.loginRepository = loginRepository;

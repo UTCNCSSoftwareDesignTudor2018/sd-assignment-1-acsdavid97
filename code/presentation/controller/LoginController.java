@@ -9,16 +9,16 @@ import presentation.view.StudentView;
 import presentation.view.TeacherView;
 
 public class LoginController {
-    private LoginView loginView;
-    private Facade facade;
+    private final LoginView loginView;
+    private final Facade facade;
 
     public LoginController(LoginView loginView, Facade facade) {
         this.loginView = loginView;
         this.facade = facade;
 
         loginView.getButton1().addActionListener(actionEvent -> {
-            String username = loginView.getTextField1().getText();
-            String password = new String(loginView.getPasswordField1().getPassword());
+            String username = loginView.getUsernameField().getText();
+            String password = new String(loginView.getPasswordField().getPassword());
 
             if (facade.checkCredentials(username, password)){
                 loginView.setVisible(false);

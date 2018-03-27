@@ -1,14 +1,13 @@
 package business;
 
-import data_access.TeacherDatabase;
 import data_access.TeacherRepository;
 import data_access.dto.Teacher;
 import data_access.dto.User;
 
 import java.util.Collection;
 
-public class TeacherBLL {
-    private TeacherRepository teacherRepository;
+class TeacherBLL {
+    private final TeacherRepository teacherRepository;
 
     TeacherBLL(TeacherRepository teacherRepository) {
         this.teacherRepository = teacherRepository;

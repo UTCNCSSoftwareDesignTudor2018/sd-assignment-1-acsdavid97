@@ -1,6 +1,5 @@
 package business;
 
-import data_access.EnrollmentDatabase;
 import data_access.EnrollmentRepository;
 import data_access.dto.Course;
 import data_access.dto.Enrollment;
@@ -8,8 +7,8 @@ import data_access.dto.Student;
 
 import java.util.Collection;
 
-public class EnrollBLL {
-    private EnrollmentRepository enrollmentRepository;
+class EnrollBLL {
+    private final EnrollmentRepository enrollmentRepository;
 
     EnrollBLL(EnrollmentRepository enrollmentRepository) {
         this.enrollmentRepository = enrollmentRepository;
@@ -31,7 +30,7 @@ public class EnrollBLL {
         return enrollmentRepository.findEnrollmentByStudentAndCourse(student, course);
     }
 
-    public boolean unenrollStudent(Student student, Course course) {
+    public boolean unEnrollStudent(Student student, Course course) {
         Enrollment enrollment = enrollmentRepository.findEnrollmentByStudentAndCourse(student, course);
         if (enrollment == null) {
             return false;

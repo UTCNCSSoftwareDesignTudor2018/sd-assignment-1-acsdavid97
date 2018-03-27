@@ -1,14 +1,13 @@
 package presentation.controller;
 
 import business.Facade;
-import business.UserBLL;
 import data_access.dto.Login;
 import data_access.dto.User;
 import presentation.view.UserView;
 
-public class UserController {
-    private UserView userView;
-    private Facade facade;
+class UserController {
+    private final UserView userView;
+    private final Facade facade;
     private User user;
     private Login login;
 

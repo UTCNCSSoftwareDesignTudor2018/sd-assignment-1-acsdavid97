@@ -14,8 +14,8 @@ public class StudentView extends JFrame{
     private StudentCourseView studentCourseView;
     private CourseListView courseListView;
     private UserView userView;
-    private Facade facade;
-    private Student student;
+    private final Facade facade;
+    private final Student student;
 
     public StudentView(Facade facade, Student student) {
         this.student = student;
@@ -23,12 +23,11 @@ public class StudentView extends JFrame{
     }
 
     private void createUIComponents() {
-        // TODO: place custom component creation code here
         this.rootPanel = new JPanel();
         this.rootPanel.setLayout(new BorderLayout());
 
         this.studentCourseView = new StudentCourseView(this.facade, this.student);
-        this.studentCourseView.setButtonText("unenroll");
+        this.studentCourseView.setButtonText("un-enroll");
         this.studentCourseView.setExamButtonText("view grade");
         this.rootPanel.add(this.studentCourseView.getRootPanel(), BorderLayout.SOUTH);
 

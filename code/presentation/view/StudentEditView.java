@@ -8,13 +8,13 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 
 public class StudentEditView extends JPanel {
-    private StudentListView studentListView;
-    private Facade facade;
-    private JButton addButton;
-    private JButton deleteButton;
-    private JButton updateButton;
-    private JButton gradeButton;
-    private JButton generateReportButton;
+    private final StudentListView studentListView;
+    private final Facade facade;
+    private final JButton addButton;
+    private final JButton deleteButton;
+    private final JButton updateButton;
+    private final JButton gradeButton;
+    private final JButton generateReportButton;
 
     public StudentEditView(Facade facade) {
         this. facade = facade;

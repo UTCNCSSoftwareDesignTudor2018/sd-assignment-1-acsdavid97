@@ -11,14 +11,14 @@ public class CourseListView {
     private JList<Course> courseList;
     private JPanel rootPanel;
     private JButton button;
-    private Facade facade;
+    private final Facade facade;
 
     public CourseListView(Facade facade) {
         this.facade = facade;
         this.populateCourseList();
     }
 
-    public void populateCourseList() {
+    private void populateCourseList() {
         Collection<Course> courseCollection = facade.getCourses();
         Course[] courses = courseCollection.toArray(new Course[courseCollection.size()]);
         courseList.setListData(courses);

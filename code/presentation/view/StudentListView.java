@@ -6,10 +6,10 @@ import data_access.dto.Student;
 import javax.swing.*;
 import java.util.Collection;
 
-public class StudentListView {
+class StudentListView {
     private JList<Student> studentList;
     private JPanel rootPanel;
-    private Facade facade;
+    private final Facade facade;
 
     public StudentListView(Facade facade) {
         this.facade = facade;

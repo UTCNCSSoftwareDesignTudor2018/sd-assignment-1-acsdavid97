@@ -8,13 +8,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class Facade {
-    private CourseBLL courseBLL;
-    private LoginBLL loginBLL;
-    private UserBLL userBLL;
-    private StudentBLL studentBLL;
-    private TeacherBLL teacherBLL;
-    private EnrollBLL enrollBLL;
-    private ExamBLL examBLL;
+    private final CourseBLL courseBLL;
+    private final LoginBLL loginBLL;
+    private final UserBLL userBLL;
+    private final StudentBLL studentBLL;
+    private final TeacherBLL teacherBLL;
+    private final EnrollBLL enrollBLL;
+    private final ExamBLL examBLL;
 
     public Facade() {
         courseBLL = new CourseBLL(new CourseDatabase());
@@ -79,8 +79,8 @@ public class Facade {
         return enrollBLL.enrollStudent(student, course);
     }
 
-    public boolean unenrollStudent(Student student, Course course) {
-        return enrollBLL.unenrollStudent(student, course);
+    public boolean unEnrollStudent(Student student, Course course) {
+        return enrollBLL.unEnrollStudent(student, course);
     }
 
     public Collection<Course> findCoursesOfStudent(Student student) {
@@ -102,7 +102,7 @@ public class Facade {
         return findExamOfEnrollment(enrollment);
     }
 
-    public Exam findExamOfEnrollment(Enrollment enrollment) {
+    private Exam findExamOfEnrollment(Enrollment enrollment) {
         return examBLL.findExamFromEnrollment(enrollment);
     }
 

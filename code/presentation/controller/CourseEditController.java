@@ -3,9 +3,9 @@ package presentation.controller;
 import business.Facade;
 import presentation.view.CourseEditView;
 
-public class CourseEditController {
-    private Facade facade;
-    private CourseEditView courseEditView;
+class CourseEditController {
+    private final Facade facade;
+    private final CourseEditView courseEditView;
 
     public CourseEditController(Facade facade, CourseEditView courseEditView) {
         this.facade = facade;

@@ -1,6 +1,5 @@
 package presentation.view;
 
-import business.CourseBLL;
 import business.Facade;
 import data_access.dto.Course;
 import data_access.dto.Student;
@@ -10,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.util.Collection;
 
 public class StudentCourseView {
+    // todo: refactor
     private JList<Course> list1;
     private JButton examButton;
     private JButton button1;
@@ -19,8 +19,8 @@ public class StudentCourseView {
         return this.rootPanel;
     }
 
-    private Facade facade;
-    private Student student;
+    private final Facade facade;
+    private final Student student;
 
     public StudentCourseView(Facade facade, Student student) {
         this.facade = facade;
