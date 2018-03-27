@@ -10,8 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class StudentRepository extends DatabaseRepository<Student> implements StudentRepositoryInterface{
-    public StudentRepository() {
+public class StudentDatabase extends DatabaseRepository<Student> implements StudentRepository {
+    public StudentDatabase() {
         super(Student.class);
     }
 

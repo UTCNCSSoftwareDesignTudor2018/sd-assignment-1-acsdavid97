@@ -10,12 +10,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class UserRepository extends DatabaseRepository<User>{
-    public UserRepository() {
+public class UserDatabase extends DatabaseRepository<User> implements UserRepository {
+    public UserDatabase() {
         super(User.class);
     }
 
-    public User findUserByLogin(Login login) {
+    public User findUserByLogin(Login login) throws RepositoryException {
         String findString = "SELECT * FROM `users` WHERE " + "login_id = " + "?";
         try {
             Connection connection = ConnectionFactory.getConnection();

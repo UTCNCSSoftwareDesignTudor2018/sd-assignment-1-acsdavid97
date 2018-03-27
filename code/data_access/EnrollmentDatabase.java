@@ -12,8 +12,8 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 
-public class EnrollmentRepository extends DatabaseRepository<Enrollment> implements EnrollmentRepositoryInterface{
-    public EnrollmentRepository() {
+public class EnrollmentDatabase extends DatabaseRepository<Enrollment> implements EnrollmentRepository {
+    public EnrollmentDatabase() {
         super(Enrollment.class);
     }
 

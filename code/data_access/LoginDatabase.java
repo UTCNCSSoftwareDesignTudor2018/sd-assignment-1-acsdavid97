@@ -9,8 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class LoginRepository extends DatabaseRepository<Login> implements LoginRepositoryInterface{
-    public LoginRepository() {
+public class LoginDatabase extends DatabaseRepository<Login> implements LoginRepository {
+    public LoginDatabase() {
         super(Login.class);
     }
 

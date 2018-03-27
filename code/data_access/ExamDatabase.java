@@ -10,8 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class ExamRepository extends DatabaseRepository<Exam> implements ExamRepositoryInterface{
-    public ExamRepository() {
+public class ExamDatabase extends DatabaseRepository<Exam> implements ExamRepository {
+    public ExamDatabase() {
         super(Exam.class);
     }
 
