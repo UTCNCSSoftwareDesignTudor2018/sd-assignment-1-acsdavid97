@@ -23,4 +23,8 @@ public class UserBLL {
         // TODO: validate
         userRepository.update(user);
     }
+
+    public void addUser(User newUser) {
+        userRepository.add(newUser);
+    }
 }

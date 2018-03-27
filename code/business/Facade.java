@@ -2,6 +2,7 @@ package business;
 
 import data_access.dto.*;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -12,6 +13,7 @@ public class Facade {
     private StudentBLL studentBLL;
     private TeacherBLL teacherBLL;
     private EnrollBLL enrollBLL;
+    private ExamBLL examBLL;
 
     public Facade() {
         courseBLL = new CourseBLL();
@@ -20,6 +22,7 @@ public class Facade {
         studentBLL = new StudentBLL();
         teacherBLL = new TeacherBLL();
         enrollBLL = new EnrollBLL();
+        examBLL = new ExamBLL();
     }
 
     public Collection<Course> getCourses() {
@@ -47,6 +50,10 @@ public class Facade {
         return studentBLL.findStudentByUser(user);
     }
 
+    public Collection<Student> getStudents() {
+        return studentBLL.getStudents();
+    }
+
     public User findUserByStudent(Student student) {
         return this.userBLL.findUserById(student.getUser_id());
     }
@@ -71,6 +78,10 @@ public class Facade {
         return enrollBLL.enrollStudent(student, course);
     }
 
+    public boolean unenrollStudent(Student student, Course course) {
+        return enrollBLL.unenrollStudent(student, course);
+    }
+
     public Collection<Course> findCoursesOfStudent(Student student) {
         Collection<Enrollment> enrollments = enrollBLL.findEnrollmentsOfStudent(student);
         Collection<Course> courses = new ArrayList<>();
@@ -80,5 +91,110 @@ public class Facade {
             courses.add(course);
         }
         return courses;
+    }
+
+    public Exam findExamOfStudentCourse(Student student, Course course) {
+        Enrollment enrollment = enrollBLL.findEnrollmentByStudentAndCourse(student, course);
+        if (enrollment == null) {
+            return null;
+        }
+        return findExamOfEnrollment(enrollment);
+    }
+
+    public Exam findExamOfEnrollment(Enrollment enrollment) {
+        return examBLL.findExamFromEnrollment(enrollment);
+    }
+
+    public Collection<Teacher> getTeachers() {
+        return teacherBLL.getTeachers();
+    }
+
+    public boolean updateLogin(Login updatedLogin) {
+        return loginBLL.updateLogin(updatedLogin);
+    }
+
+    public Login findLoginByUser(User user) {
+        return loginBLL.findLoginByUser(user);
+    }
+
+    public boolean addStudent(Login newLogin, User newUser, Student newStudent) {
+        if (!loginBLL.createLoginCredentials(newLogin.getUsername(), newLogin.getPassword())) {
+            return false;
+        }
+
+        Login createdLogin = loginBLL.findLoginByUsername(newLogin.getUsername());
+        newUser.setLogin_id(createdLogin.getId());
+        userBLL.addUser(newUser);
+        User createdUser = userBLL.findUserByLogin(createdLogin);
+        newStudent.setUser_id(createdUser.getId());
+        studentBLL.addStudent(newStudent);
+        return true;
+    }
+
+    public Login findLoginByStudent(Student student) {
+        User user = findUserByStudent(student);
+        if (user == null) {
+            return null;
+        }
+        return findLoginByUser(user);
+    }
+
+    public void deleteLogin(Login login) {
+        loginBLL.deleteLogin(login);
+    }
+
+    public boolean updateStudent(Login newLogin, User newUser, Student newStudent) {
+        if (!loginBLL.updateLogin(newLogin)){
+            return false;
+        }
+
+        userBLL.updateUser(newUser);
+        studentBLL.updateStudent(newStudent);
+        return true;
+    }
+
+    public Login findLoginByTeacher(Teacher teacher) {
+        User user = findUserByTeacher(teacher);
+        if (user == null) {
+            return null;
+        }
+
+        return findLoginByUser(user);
+    }
+
+    public User findUserByTeacher(Teacher teacher) {
+        return userBLL.findUserById(teacher.getUser_id());
+    }
+
+    public boolean updateTeacher(Login newLogin, User newUser, Teacher newTeacher) {
+        if (!loginBLL.updateLogin(newLogin)) {
+            return false;
+        }
+
+        userBLL.updateUser(newUser);
+        teacherBLL.updateTeacher(newTeacher);
+        return true;
+    }
+
+    public boolean addTeacher(Login newLogin, User newUser, Teacher newTeacher) {
+        if (!loginBLL.createLoginCredentials(newLogin.getUsername(), newLogin.getPassword())) {
+            return false;
+        }
+
+        Login createdLogin = loginBLL.findLoginByUsername(newLogin.getUsername());
+        newUser.setLogin_id(createdLogin.getId());
+        userBLL.addUser(newUser);
+        User createdUser = userBLL.findUserByLogin(createdLogin);
+        newTeacher.setUser_id(createdUser.getId());
+        teacherBLL.addTeacher(newTeacher);
+        return true;
+    }
+
+    public void gradeStudent(Student student, Course course, int grade) {
+        Enrollment enrollment = enrollBLL.findEnrollmentByStudentAndCourse(student, course);
+        Exam exam = new Exam();
+        exam.setDate(new Timestamp(System.currentTimeMillis()));
+        exam.setEnrollment_id(enrollment.getId());
+        examBLL.addGrade(exam);
     }
 }
