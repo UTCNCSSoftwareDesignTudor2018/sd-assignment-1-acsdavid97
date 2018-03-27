@@ -1,5 +1,6 @@
 package business;
 
+import data_access.ExamDatabase;
 import data_access.ExamRepository;
 import data_access.dto.Enrollment;
 import data_access.dto.Exam;
@@ -7,8 +8,8 @@ import data_access.dto.Exam;
 public class ExamBLL {
     private ExamRepository examRepository;
 
-    public ExamBLL() {
-        examRepository = new ExamRepository();
+    ExamBLL(ExamRepository examRepository) {
+        examRepository = examRepository;
     }
 
     public Exam findExamFromEnrollment(Enrollment enrollment) {

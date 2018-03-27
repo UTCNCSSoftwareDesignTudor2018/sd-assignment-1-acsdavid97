@@ -1,6 +1,6 @@
 package business;
 
-import data_access.GenericRepository;
+import data_access.TeacherDatabase;
 import data_access.TeacherRepository;
 import data_access.dto.Teacher;
 import data_access.dto.User;
@@ -10,8 +10,8 @@ import java.util.Collection;
 public class TeacherBLL {
     private TeacherRepository teacherRepository;
 
-    public TeacherBLL() {
-        this.teacherRepository = new TeacherRepository();
+    TeacherBLL(TeacherRepository teacherRepository) {
+        this.teacherRepository = teacherRepository;
     }
 
     public Teacher findTeacherByUser(User user) {

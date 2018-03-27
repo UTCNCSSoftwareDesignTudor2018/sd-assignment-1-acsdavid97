@@ -1,5 +1,6 @@
 package business;
 
+import data_access.EnrollmentDatabase;
 import data_access.EnrollmentRepository;
 import data_access.dto.Course;
 import data_access.dto.Enrollment;
@@ -10,13 +11,13 @@ import java.util.Collection;
 public class EnrollBLL {
     private EnrollmentRepository enrollmentRepository;
 
-    public EnrollBLL() {
-        this.enrollmentRepository = new EnrollmentRepository();
+    EnrollBLL(EnrollmentRepository enrollmentRepository) {
+        this.enrollmentRepository = enrollmentRepository;
     }
 
     public boolean enrollStudent(Student student, Course course) {
         if (enrollmentRepository.findEnrollmentByStudentAndCourse(student, course) != null) {
-            // there is already such an enrollement.
+            // there is already such an enrollment.
             return false;
         }
         Enrollment enrollment = new Enrollment();

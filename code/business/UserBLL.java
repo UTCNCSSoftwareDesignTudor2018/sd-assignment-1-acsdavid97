@@ -7,8 +7,8 @@ import data_access.dto.User;
 public class UserBLL {
     private UserRepository userRepository;
 
-    public UserBLL() {
-        this.userRepository = new UserRepository();
+    UserBLL(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     public User findUserById(int id) {

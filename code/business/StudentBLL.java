@@ -1,6 +1,6 @@
 package business;
 
-import data_access.GenericRepository;
+import data_access.StudentDatabase;
 import data_access.StudentRepository;
 import data_access.dto.Student;
 import data_access.dto.User;
@@ -11,8 +11,8 @@ public class StudentBLL {
 
     private StudentRepository studentRepository;
 
-    public StudentBLL() {
-        this.studentRepository = new StudentRepository();
+    StudentBLL(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
     }
 
     public Student findStudentByUser(User user) {

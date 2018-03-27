@@ -1,5 +1,6 @@
 package business;
 
+import data_access.LoginDatabase;
 import data_access.LoginRepository;
 import data_access.dto.Login;
 import data_access.dto.User;
@@ -8,8 +9,8 @@ public class LoginBLL {
 
     private LoginRepository loginRepository;
 
-    public LoginBLL() {
-        loginRepository = new LoginRepository();
+    LoginBLL(LoginRepository loginRepository) {
+        this.loginRepository = loginRepository;
     }
 
     public boolean checkCredentials(Login login) {

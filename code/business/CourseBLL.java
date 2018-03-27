@@ -1,16 +1,17 @@
 package business;
 
+import data_access.CourseRepository;
 import data_access.GenericRepository;
 import data_access.dto.Course;
-import data_access.CourseRepository;
+import data_access.CourseDatabase;
 
 import java.util.Collection;
 
 public class CourseBLL {
-    private GenericRepository<Course> courseRepository;
+    private CourseRepository courseRepository;
 
-    CourseBLL() {
-        this.courseRepository = new CourseRepository();
+    CourseBLL(CourseRepository courseRepository) {
+        this.courseRepository = courseRepository;
     }
 
     public Collection<Course> getCourses() {

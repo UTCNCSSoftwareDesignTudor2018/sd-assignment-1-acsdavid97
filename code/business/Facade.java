@@ -1,5 +1,6 @@
 package business;
 
+import data_access.*;
 import data_access.dto.*;
 
 import java.sql.Timestamp;
@@ -16,13 +17,13 @@ public class Facade {
     private ExamBLL examBLL;
 
     public Facade() {
-        courseBLL = new CourseBLL();
-        loginBLL = new LoginBLL();
-        userBLL = new UserBLL();
-        studentBLL = new StudentBLL();
-        teacherBLL = new TeacherBLL();
-        enrollBLL = new EnrollBLL();
-        examBLL = new ExamBLL();
+        courseBLL = new CourseBLL(new CourseDatabase());
+        loginBLL = new LoginBLL(new LoginDatabase());
+        userBLL = new UserBLL(new UserDatabase());
+        studentBLL = new StudentBLL(new StudentDatabase());
+        teacherBLL = new TeacherBLL(new TeacherDatabase());
+        enrollBLL = new EnrollBLL(new EnrollmentDatabase());
+        examBLL = new ExamBLL(new ExamDatabase());
     }
 
     public Collection<Course> getCourses() {
