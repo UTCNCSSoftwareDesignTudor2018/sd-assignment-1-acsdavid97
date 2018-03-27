@@ -6,6 +6,7 @@ import data_access.dto.Student;
 import data_access.dto.Teacher;
 import presentation.view.LoginView;
 import presentation.view.StudentView;
+import presentation.view.TeacherView;
 
 public class LoginController {
     private LoginView loginView;
@@ -35,13 +36,12 @@ public class LoginController {
         if (student != null) {
             StudentView studentView = new StudentView(this.facade, student);
             StudentController studentController = new StudentController(studentView, student, this.facade);
-//            StudentCourseView courseView = new StudentCourseView(facade);
-//            StudentCourseController courseController = new StudentCourseController(courseView);
         }
 
         Teacher teacher = facade.findTeacherByLogin(login);
         if (teacher != null) {
-            //TeacherView teacherView = new Teacher(Viewthis.facade, teacher);
+            TeacherView teacherView = new TeacherView(this.facade);
+            TeacherController teacherController = new TeacherController(facade, teacherView);
         }
     }
 

@@ -1,16 +1,15 @@
 package presentation.controller;
 
 import business.Facade;
-import data_access.dto.Course;
-import data_access.dto.Student;
-import data_access.dto.User;
+import data_access.dto.*;
+import presentation.view.CourseListView;
+import presentation.view.StudentCourseView;
 import presentation.view.StudentView;
 
 public class StudentController {
     private Student student;
     private StudentView studentView;
     private UserController userController;
-    private StudentCourseController studentCourseController;
     private Facade facade;
 
     public StudentController(StudentView studentView, Student student, Facade facade) {
@@ -19,10 +18,11 @@ public class StudentController {
         this.facade = facade;
 
         User user = facade.findUserByStudent(student);
-        this.userController = new UserController(studentView.getUserView(), facade, user);
-        this.studentCourseController = new StudentCourseController(studentView.getStudentCourseView());
-        this.studentCourseController.setButtonListener(actionEvent -> {
-            // todo find course
+        Login login = facade.findLoginByUser(user);
+        this.userController = new UserController(studentView.getUserView(), facade, user, login);
+
+        CourseListView courseListView = this.studentView.getCourseListView();
+        courseListView.setButtonActionListener(actionEvent -> {
             Course course = studentView.getSelectedCourse();
             if (course == null) {
                 return;
@@ -30,8 +30,35 @@ public class StudentController {
             if (!facade.enrollStudent(student, course)) {
                 AlertHelper.displayError("student already enrolled");
             }
+            studentView.getStudentCourseView().populateCourseList();
         });
 
+
+        StudentCourseView studentCourseView = this.studentView.getStudentCourseView();
+        studentCourseView.setButtonActionListener(actionEvent -> {
+            Course course = studentView.getSelectedStudentCourse();
+            if (course == null) {
+                return;
+            }
+            if (!facade.unenrollStudent(student, course)) {
+                AlertHelper.displayError("could not unenroll student");
+            }
+            studentView.getStudentCourseView().populateCourseList();
+        });
+
+        studentCourseView.setExamButtonActionListener(actionEvent ->{
+            Course course = studentView.getSelectedStudentCourse();
+            if (course == null) {
+                return;
+            }
+            Exam exam = facade.findExamOfStudentCourse(student, course);
+            if (exam == null) {
+                AlertHelper.displayInfo("no grade found");
+            }
+            else{
+                AlertHelper.displayInfo(exam.toString());
+            }
+        });
 
     }
 

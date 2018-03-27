@@ -1,6 +1,7 @@
 package presentation.view;
 
 import business.Facade;
+import data_access.dto.Login;
 import data_access.dto.User;
 
 import javax.swing.*;
@@ -13,13 +14,16 @@ public class UserView extends JPanel{
     private JTextField addressField;
     private JButton updateButton;
     private JPanel rootPanel;
+    private JTextField usernameField;
+    private JPasswordField passwordField;
     private User user;
+    private Login login;
     private Facade facade;
 
-    public UserView(User user, Facade facade) {
+    public UserView(Login login, User user, Facade facade) {
+        this.login = login;
         this.user = user;
         this.facade = facade;
-        this.updateFields();
     }
 
     public void setUpdateButtonListener(ActionListener actionListener) {
@@ -28,11 +32,15 @@ public class UserView extends JPanel{
 
     public void updateFields() {
         this.user = facade.findUserById(user.getId());
+        this.login = facade.findLoginByUser(user);
 
         this.nameField.setText(user.getName());
         this.cardNumberField.setText(user.getCard_number());
         this.personalNumericalCodeField.setText(user.getPersonal_numerical_code());
         this.addressField.setText(user.getAddress());
+
+        this.usernameField.setText(login.getUsername());
+        this.passwordField.setText(login.getPassword());
     }
 
     public String getNameText () {
@@ -53,5 +61,13 @@ public class UserView extends JPanel{
 
     public JPanel getRootPanel() {
         return rootPanel;
+    }
+
+    public String getUsernameText() {
+        return usernameField.getText();
+    }
+
+    public String getPasswordText() {
+        return new String(passwordField.getPassword());
     }
 }

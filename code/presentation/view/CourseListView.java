@@ -7,13 +7,13 @@ import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.util.Collection;
 
-public class CourseView {
+public class CourseListView {
     private JList<Course> courseList;
     private JPanel rootPanel;
     private JButton button;
     private Facade facade;
 
-    public CourseView(Facade facade) {
+    public CourseListView(Facade facade) {
         this.facade = facade;
         this.populateCourseList();
     }

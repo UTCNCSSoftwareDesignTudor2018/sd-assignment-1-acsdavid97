@@ -2,6 +2,7 @@ package presentation.view;
 
 import business.Facade;
 import data_access.dto.Course;
+import data_access.dto.Login;
 import data_access.dto.Student;
 import data_access.dto.User;
 
@@ -11,6 +12,7 @@ import java.awt.*;
 public class StudentView extends JFrame{
     private JPanel rootPanel;
     private StudentCourseView studentCourseView;
+    private CourseListView courseListView;
     private UserView userView;
     private Facade facade;
     private Student student;
@@ -26,13 +28,28 @@ public class StudentView extends JFrame{
         this.rootPanel.setLayout(new BorderLayout());
 
         this.studentCourseView = new StudentCourseView(this.facade, this.student);
-        this.rootPanel.add(this.studentCourseView.getRootPanel(), BorderLayout.EAST);
+        this.studentCourseView.setButtonText("unenroll");
+        this.studentCourseView.setExamButtonText("view grade");
+        this.rootPanel.add(this.studentCourseView.getRootPanel(), BorderLayout.SOUTH);
 
+        JPanel userStudentInfo = new JPanel();
+        userStudentInfo.setLayout(new BorderLayout());
 
         User user = facade.findUserByStudent(student);
-        this.userView = new UserView(user, facade);
+        Login login = facade.findLoginByUser(user);
+        this.userView = new UserView(login, user, facade);
+        userView.updateFields();
         this.userView.setPreferredSize(new Dimension(400, 400));
-        rootPanel.add(userView.getRootPanel(), BorderLayout.WEST);
+        userStudentInfo.add(userView.getRootPanel(), BorderLayout.SOUTH);
+
+        StudentInfoView studentInfoView = new StudentInfoView(student);
+        userStudentInfo.add(studentInfoView.getRootPanel(), BorderLayout.NORTH);
+
+        rootPanel.add(userStudentInfo, BorderLayout.NORTH);
+
+        this.courseListView = new CourseListView(facade);
+        this.courseListView.setButtonText("enroll");
+        rootPanel.add(courseListView.getRootPanel(), BorderLayout.CENTER);
 
         this.setContentPane(rootPanel);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -49,7 +66,15 @@ public class StudentView extends JFrame{
         return userView;
     }
 
-    public Course getSelectedCourse() {
+    public Course getSelectedStudentCourse() {
         return studentCourseView.getSelectedCourse();
+    }
+
+    public Course getSelectedCourse() {
+        return courseListView.getSelectedCourse();
+    }
+
+    public CourseListView getCourseListView() {
+        return courseListView;
     }
 }

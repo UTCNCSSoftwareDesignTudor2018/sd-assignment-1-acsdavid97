@@ -11,6 +11,7 @@ import java.util.Collection;
 
 public class StudentCourseView {
     private JList<Course> list1;
+    private JButton examButton;
     private JButton button1;
     private JPanel rootPanel;
 
@@ -31,6 +32,10 @@ public class StudentCourseView {
         button1.addActionListener(actionListener);
     }
 
+    public void setExamButtonActionListener(ActionListener actionListener) {
+        examButton.addActionListener(actionListener);
+    }
+
     public void populateCourseList() {
         Collection<Course> courseCollection = facade.findCoursesOfStudent(student);
         Course[] courses = courseCollection.toArray(new Course[courseCollection.size()]);
@@ -39,5 +44,13 @@ public class StudentCourseView {
 
     public Course getSelectedCourse() {
         return list1.getSelectedValue();
+    }
+
+    public void setButtonText(String text) {
+        button1.setText(text);
+    }
+
+    public void setExamButtonText(String text) {
+        examButton.setText(text);
     }
 }
