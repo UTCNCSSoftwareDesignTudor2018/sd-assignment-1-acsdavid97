@@ -30,5 +30,4 @@ public class LoginRepository extends DatabaseRepository<Login>{
             throw new RepositoryException(e);
         }
     }
-
 }

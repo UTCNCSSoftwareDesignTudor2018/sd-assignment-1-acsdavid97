@@ -17,6 +17,7 @@ public class Login implements GenericDTO{
     }
 
     public Login(Login login) {
+        this.id = login.id;
         this.username = login.username;
         this.password = login.password;
     }

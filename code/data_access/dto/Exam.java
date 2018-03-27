@@ -1,15 +1,16 @@
 package data_access.dto;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 public class Exam implements GenericDTO {
     private int id;
     private int grade;
     private int enrollment_id;
-    private Date date;
+    private Timestamp date;
 
-    public Exam(int id, int grade, int enrollment_id, Date date) {
+    public Exam(int id, int grade, int enrollment_id, Timestamp date) {
         this.id = id;
         this.grade = grade;
         this.enrollment_id = enrollment_id;
@@ -78,11 +79,11 @@ public class Exam implements GenericDTO {
         this.grade = grade;
     }
 
-    public Date getDate() {
+    public Timestamp getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
 }

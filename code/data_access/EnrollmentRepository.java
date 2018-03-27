@@ -1,6 +1,7 @@
 package data_access;
 
 import data_access.connection.ConnectionFactory;
+import data_access.dto.Course;
 import data_access.dto.Enrollment;
 import data_access.dto.Student;
 
@@ -27,6 +28,23 @@ public class EnrollmentRepository extends DatabaseRepository<Enrollment>{
             findStatement.close();
             connection.close();
             return foundDTOs;
+        } catch (SQLException e) {
+            throw new RepositoryException(e);
+        }
+    }
+
+    public Enrollment findEnrollmentByStudentAndCourse(Student student, Course course) {
+        String findString = "SELECT * FROM `enrollments` WHERE " + "student_id = " + "? AND course_id = " + "?";
+        try {
+            Connection connection = ConnectionFactory.getConnection();
+            PreparedStatement findStatement = connection.prepareStatement(findString);
+            findStatement.setInt(1, student.getId());
+            findStatement.setInt(2, course.getId());
+            ResultSet foundElements = findStatement.executeQuery();
+            List<Enrollment> foundDTOs = createObjects(foundElements);
+            findStatement.close();
+            connection.close();
+            return foundDTOs.size() > 0 ? foundDTOs.get(0) : null;
         } catch (SQLException e) {
             throw new RepositoryException(e);
         }
