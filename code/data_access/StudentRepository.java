@@ -10,12 +10,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class StudentRepository extends DatabaseRepository<Student> {
+public class StudentRepository extends DatabaseRepository<Student> implements StudentRepositoryInterface{
     public StudentRepository() {
         super(Student.class);
     }
 
-    public Student findStudentByUser(User user) {
+    public Student findStudentByUser(User user) throws RepositoryException{
         String findString = "SELECT * FROM `students` WHERE " + "user_id = " + "?";
         try {
             Connection connection = ConnectionFactory.getConnection();

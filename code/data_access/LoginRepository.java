@@ -2,7 +2,6 @@ package data_access;
 
 import data_access.connection.ConnectionFactory;
 import data_access.dto.Login;
-import data_access.dto.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class LoginRepository extends DatabaseRepository<Login>{
+public class LoginRepository extends DatabaseRepository<Login> implements LoginRepositoryInterface{
     public LoginRepository() {
         super(Login.class);
     }

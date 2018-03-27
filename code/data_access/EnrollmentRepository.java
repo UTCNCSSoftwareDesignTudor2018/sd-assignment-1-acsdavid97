@@ -12,12 +12,12 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 
-public class EnrollmentRepository extends DatabaseRepository<Enrollment>{
+public class EnrollmentRepository extends DatabaseRepository<Enrollment> implements EnrollmentRepositoryInterface{
     public EnrollmentRepository() {
         super(Enrollment.class);
     }
 
-    public Collection<Enrollment> findEnrollmentsOfStudent(Student student) {
+    public Collection<Enrollment> findEnrollmentsOfStudent(Student student) throws RepositoryException{
         String findString = "SELECT * FROM `enrollments` WHERE " + "student_id = " + "?";
         try {
             Connection connection = ConnectionFactory.getConnection();
@@ -33,7 +33,7 @@ public class EnrollmentRepository extends DatabaseRepository<Enrollment>{
         }
     }
 
-    public Enrollment findEnrollmentByStudentAndCourse(Student student, Course course) {
+    public Enrollment findEnrollmentByStudentAndCourse(Student student, Course course) throws RepositoryException{
         String findString = "SELECT * FROM `enrollments` WHERE " + "student_id = " + "? AND course_id = " + "?";
         try {
             Connection connection = ConnectionFactory.getConnection();

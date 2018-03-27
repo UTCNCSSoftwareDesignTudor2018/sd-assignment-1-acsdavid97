@@ -10,13 +10,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class ExamRepository extends DatabaseRepository<Exam>{
+public class ExamRepository extends DatabaseRepository<Exam> implements ExamRepositoryInterface{
     public ExamRepository() {
         super(Exam.class);
     }
 
-
-    public Exam findExamFromEnrollment(Enrollment enrollment) {
+    public Exam findExamFromEnrollment(Enrollment enrollment) throws RepositoryException{
         String findString = "SELECT * FROM `exams` WHERE " + "enrollment_id = " + "?";
         try {
             Connection connection = ConnectionFactory.getConnection();

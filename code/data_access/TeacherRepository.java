@@ -1,7 +1,6 @@
 package data_access;
 
 import data_access.connection.ConnectionFactory;
-import data_access.dto.Student;
 import data_access.dto.Teacher;
 import data_access.dto.User;
 
@@ -11,12 +10,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class TeacherRepository extends DatabaseRepository<Teacher>{
+public class TeacherRepository extends DatabaseRepository<Teacher> implements TeacherRepositoryInterface{
     public TeacherRepository() {
         super(Teacher.class);
     }
 
-    public Teacher findTeacherByUser(User user) {
+    public Teacher findTeacherByUser(User user) throws RepositoryException{
         String findString = "SELECT * FROM `teachers` WHERE " + "user_id = " + "?";
         try {
             Connection connection = ConnectionFactory.getConnection();
