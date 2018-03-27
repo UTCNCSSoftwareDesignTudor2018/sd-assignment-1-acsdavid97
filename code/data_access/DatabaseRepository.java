@@ -5,6 +5,7 @@ import data_access.dto.GenericDTO;
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -17,17 +18,17 @@ public class DatabaseRepository<T extends GenericDTO> implements GenericReposito
     private final Class<? extends T> type;
     private final String databaseTableName;
 
-    protected DatabaseRepository(Class<? extends T> subClass){
+    DatabaseRepository(Class<? extends T> subClass){
         this.type = subClass;
         this.databaseTableName = type.getSimpleName().toLowerCase() + "s";
     }
 
-    List<T> createObjects(ResultSet resultSet) {
+    List<T> createObjects(ResultSet resultSet) throws RepositoryException{
         List<T> list = new ArrayList<>();
 
         try {
             while (resultSet.next()) {
-                T instance = type.newInstance();
+                T instance = type.getDeclaredConstructor().newInstance();
                 for (Field field : type.getDeclaredFields()) {
                     field.setAccessible(true);
                     Object value = resultSet.getObject(field.getName());
@@ -37,8 +38,9 @@ public class DatabaseRepository<T extends GenericDTO> implements GenericReposito
                 }
                 list.add(instance);
             }
-        } catch (SQLException | IllegalAccessException | IntrospectionException | InstantiationException | InvocationTargetException e) {
-            e.printStackTrace();
+        } catch (SQLException | IllegalAccessException | IntrospectionException |
+                InstantiationException | InvocationTargetException | NoSuchMethodException e) {
+            throw new RepositoryException(e);
         }
 
         return list;
@@ -164,11 +166,11 @@ public class DatabaseRepository<T extends GenericDTO> implements GenericReposito
 
     @Override
     public boolean delete(int id) throws RepositoryException {
-        String deleteStatment = "DELETE FROM `" + databaseTableName
+        String deleteStatementString = "DELETE FROM `" + databaseTableName
                 + "` WHERE " + "id = ?";
         try {
             Connection connection = ConnectionFactory.getConnection();
-            PreparedStatement deleteStatement = connection.prepareStatement(deleteStatment);
+            PreparedStatement deleteStatement = connection.prepareStatement(deleteStatementString);
             deleteStatement.setInt(1, id);
             int rowsDeleted = deleteStatement.executeUpdate();
             deleteStatement.close();

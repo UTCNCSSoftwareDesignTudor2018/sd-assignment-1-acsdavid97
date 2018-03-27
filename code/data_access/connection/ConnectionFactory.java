@@ -14,8 +14,7 @@ public class ConnectionFactory {
     private static final ConnectionFactory factory = new ConnectionFactory();
 
     private Connection createConnection() throws SQLException {
-        Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
-        return connection;
+        return DriverManager.getConnection(DB_URL, USER, PASSWORD);
     }
 
     public static Connection getConnection() throws RepositoryException {
