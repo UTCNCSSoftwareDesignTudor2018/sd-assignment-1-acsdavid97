@@ -3,9 +3,12 @@ package business;
 import data_access.*;
 import data_access.dto.*;
 
+import java.lang.reflect.ParameterizedType;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class Facade {
     private final CourseBLL courseBLL;
@@ -67,8 +70,12 @@ public class Facade {
         return teacherBLL.findTeacherByUser(user);
     }
 
-    public Student findStudentById(int id) {
-        return studentBLL.findStudentById(id);
+    public Teacher findTeacherByUsername(String username) {
+        Login login = findLoginByUsername(username);
+        if (login == null) {
+            return null;
+        }
+        return findTeacherByLogin(login);
     }
 
     public User findUserById(int id) {
@@ -196,6 +203,25 @@ public class Facade {
         Exam exam = new Exam();
         exam.setDate(new Timestamp(System.currentTimeMillis()));
         exam.setEnrollment_id(enrollment.getId());
+        exam.setGrade(grade);
         examBLL.addGrade(exam);
+    }
+
+    public void addCourse(String courseName, Teacher teacher) {
+        Course course = new Course();
+        course.setName(courseName);
+        course.setTeacher_id(teacher.getId());
+        courseBLL.addCourse(course);
+    }
+    public Collection<Exam> findExamsForStudentForInterval(Student student, Timestamp from, Timestamp to) {
+        Collection<Course> coursesOfStudent = findCoursesOfStudent(student);
+        Collection<Exam> exams = coursesOfStudent.stream()
+                // find exam for each enrollment
+                .map(course -> findExamOfStudentCourse(student, course))
+                // discard courses, where students did not receive a grade yet.
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+        return exams.stream().filter(exam -> 0 <= exam.getDate().compareTo(from)
+                && exam.getDate().compareTo(to) <= 0).collect(Collectors.toList());
     }
 }

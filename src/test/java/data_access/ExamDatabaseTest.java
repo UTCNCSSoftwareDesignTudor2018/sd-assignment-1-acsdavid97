@@ -6,18 +6,18 @@ import org.junit.jupiter.api.Test;
 
 import java.sql.Timestamp;
 
-class ExamRepositoryTest {
+class ExamDatabaseTest {
 
-    private ExamRepository examRepository;
+    private ExamDatabase examDatabase;
     @BeforeEach
     void setUp() {
-        this.examRepository = new ExamRepository();
+        this.examDatabase = new ExamDatabase();
     }
 
     @Test
     void testAdd() {
         Exam exam = new Exam(0, 10, 2, new Timestamp(System.currentTimeMillis()));
-        this.examRepository.add(exam);
+        this.examDatabase.add(exam);
     }
 
 

@@ -1,15 +1,15 @@
 package presentation.controller;
 
 import business.Facade;
-import data_access.dto.Course;
-import data_access.dto.Login;
-import data_access.dto.Student;
-import data_access.dto.User;
-import presentation.view.StudentCourseView;
-import presentation.view.StudentEditView;
-import presentation.view.UserView;
+import data_access.dto.*;
+import presentation.view.*;
 
 import javax.swing.*;
+import java.sql.Timestamp;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.Collection;
+import java.util.Date;
 
 class StudentEditController {
     private final Facade facade;
@@ -44,43 +44,83 @@ class StudentEditController {
         });
 
         studentEditView.addGradeActionListener(actionEvent -> {
+            createGradeView(facade, studentEditView);
+        });
+
+        studentEditView.addGenerateReportActionListener(actionEvent -> {
+            createGenerateWindow(studentEditView);
+        });
+    }
+
+    private void createGenerateWindow(StudentEditView studentEditView) {
+        JFrame generateWindow = new JFrame();
+
+        GenerateReportForm generateReportForm = new GenerateReportForm();
+        generateReportForm.setReportGenerateActionListener(action -> {
             Student student = studentEditView.getSelected();
             if (student == null) {
                 return;
             }
-            StudentCourseView courseView = new StudentCourseView(facade, student);
-            courseView.setExamButtonText("grade");
-            courseView.setButtonActionListener(action -> {
-                Course course = courseView.getSelectedCourse();
-                if (course == null) {
-                    return;
-                }
-                if (facade.findExamOfStudentCourse(student, course) != null) {
-                    AlertHelper.displayError("student already graded");
-                }
-                String gradeString = JOptionPane.showInputDialog("enter grade");
-                if (gradeString == null){
-                    return;
-                }
-                int grade;
-                try {
-                    grade = Integer.parseInt(gradeString);
-                }catch (NumberFormatException e) {
-                    AlertHelper.displayError("please enter a number");
-                    return;
-                }
-                facade.gradeStudent(student, course, grade);
-            });
-            JFrame courseViewWindow = new JFrame();
-            courseViewWindow.setContentPane(courseView.getRootPanel());
-            courseViewWindow.pack();
-            courseViewWindow.setVisible(true);
-            courseViewWindow.setLocationRelativeTo(null);
+
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date dateFrom = simpleDateFormat.parse(generateReportForm.getDateFromText(), new ParsePosition(0));
+            if (dateFrom == null) {
+                AlertHelper.displayError("invalid from date");
+                return;
+            }
+            Timestamp timestampFrom = new Timestamp(dateFrom.getTime());
+
+            Date dateTo = simpleDateFormat.parse(generateReportForm.getDateToText(), new ParsePosition(0));
+            if (dateTo == null) {
+                AlertHelper.displayError("invalid to date");
+                return;
+            }
+            Timestamp timestampTo = new Timestamp(dateTo.getTime());
+
+            Collection<Exam> exams = facade.findExamsForStudentForInterval(student, timestampFrom, timestampTo);
+            generateReportForm.populateExamList(exams);
         });
 
-        studentEditView.addGenerateReportActionListener(actionEvent -> {
-            // todo;
+        generateWindow.setContentPane(generateReportForm.getRootPanel());
+
+        generateWindow.setVisible(true);
+        generateWindow.pack();
+        generateWindow.setLocationRelativeTo(null);
+    }
+
+    private void createGradeView(Facade facade, StudentEditView studentEditView) {
+        Student student = studentEditView.getSelected();
+        if (student == null) {
+            return;
+        }
+        GradeStudentCourseView courseView = new GradeStudentCourseView(facade.findCoursesOfStudent(student));
+        courseView.setGradeButtonActionListener(action -> {
+            Course course = courseView.getSelected();
+            if (course == null) {
+                return;
+            }
+            if (facade.findExamOfStudentCourse(student, course) != null) {
+                AlertHelper.displayError("student already graded");
+                return;
+            }
+            String gradeString = JOptionPane.showInputDialog("enter grade");
+            if (gradeString == null){
+                return;
+            }
+            int grade;
+            try {
+                grade = Integer.parseInt(gradeString);
+            }catch (NumberFormatException e) {
+                AlertHelper.displayError("please enter a number");
+                return;
+            }
+            facade.gradeStudent(student, course, grade);
         });
+        JFrame courseViewWindow = new JFrame();
+        courseViewWindow.setContentPane(courseView.getRootPanel());
+        courseViewWindow.pack();
+        courseViewWindow.setVisible(true);
+        courseViewWindow.setLocationRelativeTo(null);
     }
 
     private void createUserUpdateView(User user, Login login, Student student) {

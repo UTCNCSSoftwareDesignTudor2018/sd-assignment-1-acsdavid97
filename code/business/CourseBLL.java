@@ -19,4 +19,8 @@ class CourseBLL {
     public Course findCourseById(int course_id) {
         return courseRepository.findById(course_id);
     }
+
+    public void addCourse(Course course) {
+        courseRepository.add(course);
+    }
 }

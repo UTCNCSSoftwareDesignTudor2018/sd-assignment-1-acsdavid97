@@ -20,7 +20,6 @@ class UserBLL {
     }
 
     public void updateUser(User user) {
-        // TODO: validate
         userRepository.update(user);
     }
 

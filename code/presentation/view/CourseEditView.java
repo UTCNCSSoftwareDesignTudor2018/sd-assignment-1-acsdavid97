@@ -18,7 +18,7 @@ public class CourseEditView extends JPanel {
         this. facade = facade;
         this.setLayout(new BorderLayout());
 
-        courseListView = new CourseListView(facade);
+        courseListView = new CourseListView(facade.getCourses());
         this.add(courseListView.getRootPanel(), BorderLayout.NORTH);
 
         JPanel buttons = new JPanel();
@@ -48,6 +48,10 @@ public class CourseEditView extends JPanel {
 
     public Course getSelected() {
         return courseListView.getSelectedCourse();
+    }
+
+    public void updateCourseList() {
+        courseListView.populateCourseList(facade.getCourses());
     }
 }
 

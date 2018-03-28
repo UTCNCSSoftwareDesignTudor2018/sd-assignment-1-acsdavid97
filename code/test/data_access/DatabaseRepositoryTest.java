@@ -13,7 +13,7 @@ class DatabaseRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        loginRepository = new LoginRepository();
+        loginRepository = new LoginDatabase();
     }
 
     @Test

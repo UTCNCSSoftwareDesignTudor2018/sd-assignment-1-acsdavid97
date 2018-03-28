@@ -2,7 +2,7 @@ package presentation.controller;
 
 import business.Facade;
 import data_access.dto.*;
-import presentation.view.CourseListView;
+import presentation.view.EnrollCourseListView;
 import presentation.view.StudentCourseView;
 import presentation.view.StudentView;
 
@@ -21,7 +21,7 @@ class StudentController {
         Login login = facade.findLoginByUser(user);
         this.userController = new UserController(studentView.getUserView(), facade, user, login);
 
-        CourseListView courseListView = this.studentView.getCourseListView();
+        EnrollCourseListView courseListView = this.studentView.getCourseListView();
         courseListView.setButtonActionListener(actionEvent -> {
             Course course = studentView.getSelectedCourse();
             if (course == null) {
@@ -30,12 +30,12 @@ class StudentController {
             if (!facade.enrollStudent(student, course)) {
                 AlertHelper.displayError("student already enrolled");
             }
-            studentView.getStudentCourseView().populateCourseList();
+            studentView.getStudentCourseView().populateCourseView(facade.findCoursesOfStudent(student));
         });
 
 
         StudentCourseView studentCourseView = this.studentView.getStudentCourseView();
-        studentCourseView.setButtonActionListener(actionEvent -> {
+        studentCourseView.setUnEnrollButtonActionListener(actionEvent -> {
             Course course = studentView.getSelectedStudentCourse();
             if (course == null) {
                 return;
@@ -43,10 +43,10 @@ class StudentController {
             if (!facade.unEnrollStudent(student, course)) {
                 AlertHelper.displayError("could not un-enroll student");
             }
-            studentView.getStudentCourseView().populateCourseList();
+            studentView.getStudentCourseView().populateCourseView(facade.findCoursesOfStudent(student));
         });
 
-        studentCourseView.setExamButtonActionListener(actionEvent ->{
+        studentCourseView.setViewGradeButtonActionListener(actionEvent ->{
             Course course = studentView.getSelectedStudentCourse();
             if (course == null) {
                 return;

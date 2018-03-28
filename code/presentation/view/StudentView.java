@@ -12,7 +12,7 @@ import java.awt.*;
 public class StudentView extends JFrame{
     private JPanel rootPanel;
     private StudentCourseView studentCourseView;
-    private CourseListView courseListView;
+    private EnrollCourseListView courseListView;
     private UserView userView;
     private final Facade facade;
     private final Student student;
@@ -26,9 +26,7 @@ public class StudentView extends JFrame{
         this.rootPanel = new JPanel();
         this.rootPanel.setLayout(new BorderLayout());
 
-        this.studentCourseView = new StudentCourseView(this.facade, this.student);
-        this.studentCourseView.setButtonText("un-enroll");
-        this.studentCourseView.setExamButtonText("view grade");
+        this.studentCourseView = new StudentCourseView(this.facade.findCoursesOfStudent(student));
         this.rootPanel.add(this.studentCourseView.getRootPanel(), BorderLayout.SOUTH);
 
         JPanel userStudentInfo = new JPanel();
@@ -46,8 +44,7 @@ public class StudentView extends JFrame{
 
         rootPanel.add(userStudentInfo, BorderLayout.NORTH);
 
-        this.courseListView = new CourseListView(facade);
-        this.courseListView.setButtonText("enroll");
+        this.courseListView = new EnrollCourseListView(facade.getCourses());
         rootPanel.add(courseListView.getRootPanel(), BorderLayout.CENTER);
 
         this.setContentPane(rootPanel);
@@ -66,14 +63,14 @@ public class StudentView extends JFrame{
     }
 
     public Course getSelectedStudentCourse() {
-        return studentCourseView.getSelectedCourse();
+        return studentCourseView.getSelected();
     }
 
     public Course getSelectedCourse() {
         return courseListView.getSelectedCourse();
     }
 
-    public CourseListView getCourseListView() {
+    public EnrollCourseListView getCourseListView() {
         return courseListView;
     }
 }

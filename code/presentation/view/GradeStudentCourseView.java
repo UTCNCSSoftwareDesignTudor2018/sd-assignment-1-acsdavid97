@@ -7,16 +7,14 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.Collection;
 
-public class StudentCourseView {
-    private JButton unEnrollButton;
-    private JButton viewGradeButton;
+public class GradeStudentCourseView {
+    private JButton gradeButton;
     private JPanel rootPanel;
     private CourseListView courseListView;
 
-    public StudentCourseView(Collection<Course> courseCollection) {
+    public GradeStudentCourseView(Collection<Course> courseCollection) {
         this.courseListView = new CourseListView(courseCollection);
-        this.unEnrollButton = new JButton("un-enroll");
-        this.viewGradeButton = new JButton("view grade");
+        this.gradeButton = new JButton("grade");
 
         rootPanel = new JPanel();
         rootPanel.setLayout(new BorderLayout());
@@ -25,18 +23,13 @@ public class StudentCourseView {
         JPanel buttons = new JPanel();
         buttons.setLayout(new BoxLayout(buttons, BoxLayout.Y_AXIS));
 
-        buttons.add(unEnrollButton);
-        buttons.add(viewGradeButton);
+        buttons.add(gradeButton);
 
         rootPanel.add(buttons, BorderLayout.SOUTH);
     }
 
-    public void setUnEnrollButtonActionListener(ActionListener actionListener){
-        this.unEnrollButton.addActionListener(actionListener);
-    }
-
-    public void setViewGradeButtonActionListener(ActionListener actionListener) {
-        this.viewGradeButton.addActionListener(actionListener);
+    public void setGradeButtonActionListener(ActionListener actionListener) {
+        this.gradeButton.addActionListener(actionListener);
     }
 
     public void populateCourseView(Collection<Course> courseCollection) {
