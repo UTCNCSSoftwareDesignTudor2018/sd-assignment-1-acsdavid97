@@ -6,3 +6,5 @@ As student:
 As teacher:
     username: teacher
     teacher: teacher
+
+for use case pictures see the /doc/use_case_pictures directory
