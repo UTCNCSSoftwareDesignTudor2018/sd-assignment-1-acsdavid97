@@ -1,14 +1,14 @@
-package business;
+package business.facade.process;
 
 import data_access.CourseRepository;
 import data_access.dto.Course;
 
 import java.util.Collection;
 
-class CourseBLL {
+public class CourseBLL {
     private final CourseRepository courseRepository;
 
-    CourseBLL(CourseRepository courseRepository) {
+    public CourseBLL(CourseRepository courseRepository) {
         this.courseRepository = courseRepository;
     }
 

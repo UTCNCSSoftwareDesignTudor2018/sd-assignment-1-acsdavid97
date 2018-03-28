@@ -1,6 +1,6 @@
 package presentation.view;
 
-import business.Facade;
+import business.facade.CourseFacade;
 import data_access.dto.Course;
 
 import javax.swing.*;
@@ -8,14 +8,14 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 
 public class CourseEditView extends JPanel {
-    private final Facade facade;
+    private final CourseFacade facade;
     private final JButton addButton;
     private final JButton deleteButton;
     private final JButton updateButton;
     private final CourseListView courseListView;
 
-    public CourseEditView(Facade facade) {
-        this. facade = facade;
+    public CourseEditView() {
+        this. facade = new CourseFacade();
         this.setLayout(new BorderLayout());
 
         courseListView = new CourseListView(facade.getCourses());

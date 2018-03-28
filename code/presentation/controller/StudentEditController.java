@@ -1,6 +1,6 @@
 package presentation.controller;
 
-import business.Facade;
+import business.facade.StudentFacade;
 import data_access.dto.*;
 import presentation.view.*;
 
@@ -12,11 +12,11 @@ import java.util.Collection;
 import java.util.Date;
 
 class StudentEditController {
-    private final Facade facade;
+    private final StudentFacade facade;
     private final StudentEditView studentEditView;
 
-    public StudentEditController(Facade facade, StudentEditView studentEditView) {
-        this.facade = facade;
+    public StudentEditController(StudentEditView studentEditView) {
+        this.facade = new StudentFacade();
         this.studentEditView = studentEditView;
 
         studentEditView.addAddActionListener(actionEvent -> {
@@ -44,7 +44,7 @@ class StudentEditController {
         });
 
         studentEditView.addGradeActionListener(actionEvent -> {
-            createGradeView(facade, studentEditView);
+            createGradeView(studentEditView);
         });
 
         studentEditView.addGenerateReportActionListener(actionEvent -> {
@@ -88,7 +88,7 @@ class StudentEditController {
         generateWindow.setLocationRelativeTo(null);
     }
 
-    private void createGradeView(Facade facade, StudentEditView studentEditView) {
+    private void createGradeView(StudentEditView studentEditView) {
         Student student = studentEditView.getSelected();
         if (student == null) {
             return;
@@ -125,7 +125,7 @@ class StudentEditController {
 
     private void createUserUpdateView(User user, Login login, Student student) {
         JFrame userUpdateView = new JFrame();
-        UserView userView = new UserView(login, user, facade);
+        UserView userView = new UserView(login, user);
         userView.updateFields();
         userUpdateView.setContentPane(userView.getRootPanel());
         userView.setUpdateButtonListener(actionEvent -> {
@@ -155,7 +155,7 @@ class StudentEditController {
 
     private void createUserAddView(User user, Login login) {
         JFrame userAddView = new JFrame();
-        UserView userView = new UserView(login, user, facade);
+        UserView userView = new UserView(login, user);
         userAddView.setContentPane(userView.getRootPanel());
         userView.setUpdateButtonListener(actionEvent -> {
             Login newLogin = new Login(userView.getUsernameText(), userView.getPasswordText());

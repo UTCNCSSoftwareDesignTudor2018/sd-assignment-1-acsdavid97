@@ -1,6 +1,6 @@
 package presentation.controller;
 
-import business.Facade;
+import business.facade.TeacherFacade;
 import data_access.dto.Login;
 import data_access.dto.Teacher;
 import data_access.dto.User;
@@ -10,11 +10,11 @@ import presentation.view.UserView;
 import javax.swing.*;
 
 class TeacherEditController {
-    private final Facade facade;
+    private final TeacherFacade facade;
     private final TeacherEditView teacherEditView;
 
-    public TeacherEditController(Facade facade, TeacherEditView teacherEditView) {
-        this.facade = facade;
+    public TeacherEditController(TeacherEditView teacherEditView) {
+        this.facade = new TeacherFacade();
         this.teacherEditView = teacherEditView;
 
         teacherEditView.addAddActionListener(actionEvent -> {
@@ -44,7 +44,7 @@ class TeacherEditController {
 
     private void createUserUpdateView(User user, Login login, Teacher teacher) {
         JFrame userUpdateView = new JFrame();
-        UserView userView = new UserView(login, user, facade);
+        UserView userView = new UserView(login, user);
         userView.updateFields();
         userUpdateView.setContentPane(userView.getRootPanel());
         userView.setUpdateButtonListener(actionEvent -> {
@@ -73,7 +73,7 @@ class TeacherEditController {
 
     private void createUserAddView(User user, Login login) {
         JFrame userAddView = new JFrame();
-        UserView userView = new UserView(login, user, facade);
+        UserView userView = new UserView(login, user);
         userAddView.setContentPane(userView.getRootPanel());
         userView.setUpdateButtonListener(actionEvent -> {
             Login newLogin = new Login(userView.getUsernameText(), userView.getPasswordText());

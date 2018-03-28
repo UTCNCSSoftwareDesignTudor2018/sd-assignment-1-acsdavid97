@@ -1,6 +1,6 @@
 package presentation.controller;
 
-import business.Facade;
+import business.facade.LoginFacade;
 import data_access.dto.Login;
 import data_access.dto.Student;
 import data_access.dto.Teacher;
@@ -10,11 +10,11 @@ import presentation.view.TeacherView;
 
 public class LoginController {
     private final LoginView loginView;
-    private final Facade facade;
+    private final LoginFacade facade;
 
-    public LoginController(LoginView loginView, Facade facade) {
+    public LoginController(LoginView loginView) {
         this.loginView = loginView;
-        this.facade = facade;
+        this.facade = new LoginFacade();
 
         loginView.getButton1().addActionListener(actionEvent -> {
             String username = loginView.getUsernameField().getText();
@@ -34,14 +34,14 @@ public class LoginController {
     private void loginUser(Login login) {
         Student student = facade.findStudentByLogin(login);
         if (student != null) {
-            StudentView studentView = new StudentView(this.facade, student);
-            StudentController studentController = new StudentController(studentView, student, this.facade);
+            StudentView studentView = new StudentView(student);
+            StudentController studentController = new StudentController(studentView, student);
         }
 
         Teacher teacher = facade.findTeacherByLogin(login);
         if (teacher != null) {
-            TeacherView teacherView = new TeacherView(this.facade);
-            TeacherController teacherController = new TeacherController(facade, teacherView);
+            TeacherView teacherView = new TeacherView();
+            TeacherController teacherController = new TeacherController(teacherView);
         }
     }
 

@@ -1,6 +1,6 @@
 package presentation.view;
 
-import business.Facade;
+import business.facade.StudentFacade;
 import data_access.dto.Course;
 import data_access.dto.Login;
 import data_access.dto.Student;
@@ -14,17 +14,18 @@ public class StudentView extends JFrame{
     private StudentCourseView studentCourseView;
     private EnrollCourseListView courseListView;
     private UserView userView;
-    private final Facade facade;
+    private StudentFacade facade;
     private final Student student;
 
-    public StudentView(Facade facade, Student student) {
+    public StudentView(Student student) {
         this.student = student;
-        this.facade = facade;
     }
 
     private void createUIComponents() {
         this.rootPanel = new JPanel();
         this.rootPanel.setLayout(new BorderLayout());
+
+        this.facade = new StudentFacade();
 
         this.studentCourseView = new StudentCourseView(this.facade.findCoursesOfStudent(student));
         this.rootPanel.add(this.studentCourseView.getRootPanel(), BorderLayout.SOUTH);
@@ -34,7 +35,7 @@ public class StudentView extends JFrame{
 
         User user = facade.findUserByStudent(student);
         Login login = facade.findLoginByUser(user);
-        this.userView = new UserView(login, user, facade);
+        this.userView = new UserView(login, user);
         userView.updateFields();
         this.userView.setPreferredSize(new Dimension(400, 400));
         userStudentInfo.add(userView.getRootPanel(), BorderLayout.SOUTH);

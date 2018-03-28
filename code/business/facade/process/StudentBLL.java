@@ -1,4 +1,4 @@
-package business;
+package business.facade.process;
 
 import data_access.StudentRepository;
 import data_access.dto.Student;
@@ -6,11 +6,11 @@ import data_access.dto.User;
 
 import java.util.Collection;
 
-class StudentBLL {
+public class StudentBLL {
 
     private final StudentRepository studentRepository;
 
-    StudentBLL(StudentRepository studentRepository) {
+    public StudentBLL(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
     }
 

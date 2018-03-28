@@ -1,6 +1,6 @@
 package presentation.view;
 
-import business.Facade;
+import business.facade.StudentFacade;
 import data_access.dto.Student;
 
 import javax.swing.*;
@@ -9,10 +9,10 @@ import java.util.Collection;
 class StudentListView {
     private JList<Student> studentList;
     private JPanel rootPanel;
-    private final Facade facade;
+    private final StudentFacade facade;
 
-    public StudentListView(Facade facade) {
-        this.facade = facade;
+    public StudentListView() {
+        this.facade = new StudentFacade();
         populateCourseList();
     }
 

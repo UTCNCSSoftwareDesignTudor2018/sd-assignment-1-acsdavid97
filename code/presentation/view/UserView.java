@@ -1,6 +1,6 @@
 package presentation.view;
 
-import business.Facade;
+import business.facade.UserFacade;
 import data_access.dto.Login;
 import data_access.dto.User;
 
@@ -18,12 +18,12 @@ public class UserView extends JPanel{
     private JPasswordField passwordField;
     private User user;
     private Login login;
-    private final Facade facade;
+    private final UserFacade facade;
 
-    public UserView(Login login, User user, Facade facade) {
+    public UserView(Login login, User user) {
         this.login = login;
         this.user = user;
-        this.facade = facade;
+        this.facade = new UserFacade();
     }
 
     public void setUpdateButtonListener(ActionListener actionListener) {

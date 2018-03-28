@@ -1,6 +1,5 @@
 package presentation.controller;
 
-import business.Facade;
 import presentation.view.TeacherView;
 
 class TeacherController {
@@ -8,9 +7,9 @@ class TeacherController {
     private final TeacherEditController teacherEditController;
     private CourseEditController courseEditController;
 
-    public TeacherController(Facade facade, TeacherView teacherView) {
-        studentEditController = new StudentEditController(facade, teacherView.getStudentEditView());
-        teacherEditController = new TeacherEditController(facade, teacherView.getTeacherEditView());
-        courseEditController = new CourseEditController(facade, teacherView.getCourseEditView());
+    public TeacherController(TeacherView teacherView) {
+        studentEditController = new StudentEditController(teacherView.getStudentEditView());
+        teacherEditController = new TeacherEditController(teacherView.getTeacherEditView());
+        courseEditController = new CourseEditController(teacherView.getCourseEditView());
     }
 }

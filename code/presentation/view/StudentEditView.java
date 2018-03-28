@@ -1,6 +1,6 @@
 package presentation.view;
 
-import business.Facade;
+import business.facade.StudentFacade;
 import data_access.dto.Student;
 
 import javax.swing.*;
@@ -9,18 +9,18 @@ import java.awt.event.ActionListener;
 
 public class StudentEditView extends JPanel {
     private final StudentListView studentListView;
-    private final Facade facade;
+    private final StudentFacade facade;
     private final JButton addButton;
     private final JButton deleteButton;
     private final JButton updateButton;
     private final JButton gradeButton;
     private final JButton generateReportButton;
 
-    public StudentEditView(Facade facade) {
-        this. facade = facade;
+    public StudentEditView() {
+        this.facade = new StudentFacade();
         this.setLayout(new BorderLayout());
 
-        studentListView = new StudentListView(facade);
+        studentListView = new StudentListView();
         this.add(studentListView.getRootPanel(), BorderLayout.NORTH);
 
         JPanel buttons = new JPanel();

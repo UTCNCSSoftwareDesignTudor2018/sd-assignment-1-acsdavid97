@@ -1,6 +1,6 @@
 package presentation.controller;
 
-import business.Facade;
+import business.facade.StudentFacade;
 import data_access.dto.*;
 import presentation.view.EnrollCourseListView;
 import presentation.view.StudentCourseView;
@@ -10,16 +10,16 @@ class StudentController {
     private final Student student;
     private final StudentView studentView;
     private final UserController userController;
-    private final Facade facade;
+    private final StudentFacade facade;
 
-    public StudentController(StudentView studentView, Student student, Facade facade) {
+    public StudentController(StudentView studentView, Student student) {
         this.student = student;
         this.studentView = studentView;
-        this.facade = facade;
+        this.facade = new StudentFacade();
 
         User user = facade.findUserByStudent(student);
         Login login = facade.findLoginByUser(user);
-        this.userController = new UserController(studentView.getUserView(), facade, user, login);
+        this.userController = new UserController(studentView.getUserView(), user, login);
 
         EnrollCourseListView courseListView = this.studentView.getCourseListView();
         courseListView.setButtonActionListener(actionEvent -> {

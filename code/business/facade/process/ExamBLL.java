@@ -1,13 +1,13 @@
-package business;
+package business.facade.process;
 
 import data_access.ExamRepository;
 import data_access.dto.Enrollment;
 import data_access.dto.Exam;
 
-class ExamBLL {
+public class ExamBLL {
     private final ExamRepository examRepository;
 
-    ExamBLL(ExamRepository examRepository) {
+    public ExamBLL(ExamRepository examRepository) {
         this.examRepository = examRepository;
     }
 

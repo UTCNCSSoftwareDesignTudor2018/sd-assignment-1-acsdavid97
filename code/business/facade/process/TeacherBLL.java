@@ -1,4 +1,4 @@
-package business;
+package business.facade.process;
 
 import data_access.TeacherRepository;
 import data_access.dto.Teacher;
@@ -6,10 +6,10 @@ import data_access.dto.User;
 
 import java.util.Collection;
 
-class TeacherBLL {
+public class TeacherBLL {
     private final TeacherRepository teacherRepository;
 
-    TeacherBLL(TeacherRepository teacherRepository) {
+    public TeacherBLL(TeacherRepository teacherRepository) {
         this.teacherRepository = teacherRepository;
     }
 

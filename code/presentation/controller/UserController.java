@@ -1,21 +1,21 @@
 package presentation.controller;
 
-import business.Facade;
+import business.facade.UserFacade;
 import data_access.dto.Login;
 import data_access.dto.User;
 import presentation.view.UserView;
 
 class UserController {
     private final UserView userView;
-    private final Facade facade;
+    private final UserFacade facade;
     private User user;
     private Login login;
 
-    public UserController(UserView userView, Facade facade, User user, Login login) {
+    public UserController(UserView userView, User user, Login login) {
         this.userView = userView;
-        this.facade = facade;
         this.user = user;
         this.login = login;
+        this.facade = new UserFacade();
 
         userView.setUpdateButtonListener(actionEvent -> {
             Login updatedLogin = new Login(login);

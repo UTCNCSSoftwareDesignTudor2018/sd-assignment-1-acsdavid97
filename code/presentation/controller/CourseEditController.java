@@ -1,6 +1,6 @@
 package presentation.controller;
 
-import business.Facade;
+import business.facade.CourseFacade;
 import data_access.dto.Teacher;
 import presentation.view.CourseEditView;
 import presentation.view.CourseFormView;
@@ -8,15 +8,15 @@ import presentation.view.CourseFormView;
 import javax.swing.*;
 
 class CourseEditController {
-    private final Facade facade;
+    private final CourseFacade facade;
     private final CourseEditView courseEditView;
 
-    public CourseEditController(Facade facade, CourseEditView courseEditView) {
-        this.facade = facade;
+    public CourseEditController(CourseEditView courseEditView) {
+        this.facade = new CourseFacade();
         this.courseEditView = courseEditView;
 
         courseEditView.addAddActionListener(actionEvent -> {
-            createCourseAddView(facade, courseEditView);
+            createCourseAddView(courseEditView);
         });
 
         courseEditView.addUpdateActionListener(actionEvent -> {
@@ -28,7 +28,7 @@ class CourseEditController {
         });
     }
 
-    private void createCourseAddView(Facade facade, CourseEditView courseEditView) {
+    private void createCourseAddView(CourseEditView courseEditView) {
         JFrame courseWindow = new JFrame();
         CourseFormView courseFormView = new CourseFormView();
         courseWindow.setContentPane(courseFormView.getRootPanel());

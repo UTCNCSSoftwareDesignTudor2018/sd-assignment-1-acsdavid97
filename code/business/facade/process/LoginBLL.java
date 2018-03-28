@@ -1,14 +1,14 @@
-package business;
+package business.facade.process;
 
 import data_access.LoginRepository;
 import data_access.dto.Login;
 import data_access.dto.User;
 
-class LoginBLL {
+public class LoginBLL {
 
     private final LoginRepository loginRepository;
 
-    LoginBLL(LoginRepository loginRepository) {
+    public LoginBLL(LoginRepository loginRepository) {
         this.loginRepository = loginRepository;
     }
 

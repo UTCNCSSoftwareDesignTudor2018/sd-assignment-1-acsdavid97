@@ -1,4 +1,4 @@
-package business;
+package business.facade.process;
 
 import data_access.EnrollmentRepository;
 import data_access.dto.Course;
@@ -7,10 +7,10 @@ import data_access.dto.Student;
 
 import java.util.Collection;
 
-class EnrollBLL {
+public class EnrollBLL {
     private final EnrollmentRepository enrollmentRepository;
 
-    EnrollBLL(EnrollmentRepository enrollmentRepository) {
+    public EnrollBLL(EnrollmentRepository enrollmentRepository) {
         this.enrollmentRepository = enrollmentRepository;
     }
 

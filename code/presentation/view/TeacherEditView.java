@@ -1,6 +1,6 @@
 package presentation.view;
 
-import business.Facade;
+import business.facade.TeacherFacade;
 import data_access.dto.Teacher;
 
 import javax.swing.*;
@@ -9,16 +9,16 @@ import java.awt.event.ActionListener;
 
 public class TeacherEditView extends JPanel{
     private final TeacherListView teacherListView;
-    private final Facade facade;
+    private final TeacherFacade facade;
     private final JButton addButton;
     private final JButton deleteButton;
     private final JButton updateButton;
 
-    public TeacherEditView(Facade facade) {
-        this. facade = facade;
+    public TeacherEditView() {
+        this. facade = new TeacherFacade();
         this.setLayout(new BorderLayout());
 
-        teacherListView = new TeacherListView(facade);
+        teacherListView = new TeacherListView();
         this.add(teacherListView.getRootPanel(), BorderLayout.NORTH);
 
         JPanel buttons = new JPanel();
